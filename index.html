@@ -314,7 +314,6 @@
             font-size: 0.9rem;
             position: absolute;
             left: 50%; 
-            top: -95%;
             transform: translate(-50%, -50%);
         }
         
@@ -524,6 +523,21 @@
         // Footer Terminal Logic
         const terminalInput = document.getElementById('terminalInput');
         const terminalOutput = document.getElementById('terminalOutput');
+        let userIP = "unknown"; // Default value until we fetch the real IP
+
+        // Fetch user's IP address when page loads
+        window.addEventListener('load', () => {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    userIP = data.ip;
+                })
+                .catch(error => {
+                    console.error("Could not fetch IP:", error);
+                });
+            
+            document.getElementById('terminalInput').focus();
+        });
 
         terminalInput.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
@@ -553,8 +567,10 @@
   date      - Display current date/time`;
                     break;
                 case 'whoami':
-                     // Updated whoami response
-                    output = 'User: prospective_recruit@ecx-inc.system\nStatus: Analyzing... Potential asset detected.';
+                     // Updated whoami response with IP address
+                    output = `User: prospective_recruit@ecx-inc.system
+IP Address: ${userIP}
+Status: Analyzing... Potential asset detected.`;
                     break;
                 case 'ctf-info':
                      // Updated ctf-info response
@@ -571,9 +587,9 @@ ECX Inc.: WMU's premier CTF training ground and competitive team.`;
                     terminalOutput.innerHTML = '';
                     return; // Don't add empty output
                 case 'date':
-                    // Use current date from context if available, otherwise fallback
-                    const currentDate = new Date("2025-04-22T14:35:31-04:00"); // From context
-                    output = `Current System Time [EST]: ${currentDate.toLocaleString('en-US', { timeZone: 'America/Detroit' })}`;
+                    // Use the user's current date and time
+                    const currentDate = new Date(); 
+                    output = `Current System Time: ${currentDate.toLocaleString()}`;
                     break;
                 case 'ls':
                     output = `/ecx-inc/system`;
