@@ -309,8 +309,6 @@
             text-align: center;
             padding: 2rem 1.5rem;
             margin-top: 2rem;
-            border-top: 1px solid var(--border-color);
-            color: rgba(255, 255, 255, 0.5);
             font-size: 0.9rem;
             position: absolute;
             left: 50%; 
@@ -428,8 +426,8 @@
         <div class="container grid-container">
 
             <section id="home" class="grid-item">
-                <h1>ECX <span class="glitch-effect">Inc.</span></h1>
-                <p class="subheadline">Western Michigan University's premier CTF team. Sharpening skills. Capturing flags. A joint initiative by <a href="https://wraven.org" target="https://wraven.org" rel="noopener noreferrer">WRAVEN</a> and the <a href="https://ccawmu.org" target="https://ccawmu.org" rel="noopener noreferrer">Computer Club</a>.</p>
+                <h1><span class="glitch-effect">ECX Inc.</span></h1>
+                <p class="subheadline">Western Michigan University's official CTF team. Sharpening skills. Capturing flags. A joint initiative by <a href="https://wraven.org" target="https://wraven.org" rel="noopener noreferrer">WRAVEN</a> and <a href="https://ccawmu.org" target="https://ccawmu.org" rel="noopener noreferrer">CCaWMU</a>.</p>
 
                 <div class="footer-terminal">
                     <div class="terminal-output" id="terminalOutput"><div>Welcome to the ECX Inc. console. Type 'help' for commands.</div></div>
@@ -445,7 +443,7 @@
                 <h3>Mission & Purpose</h3>
                 <p>We are ECX Inc., Western Michigan University's premier Capture The Flag (CTF) team, EST. 2013, dedicated to cultivating cybersecurity talent through rigorous training and competitive events. We tackle challenges across cryptography, reverse engineering, web exploitation, pwn, & more.</p>
                 <h3>WRAVEN & Computer Club</h3>
-                 <p>ECX Inc. operates as a collaborative effort between WRAVEN (WMU's cybersecurity RSO) and the Computer Club, bringing together diverse technical interests focused on practical security application.</p>
+                 <p>ECX Inc. operates as a collaborative effort between WRAVEN (WMU's techical cybersecurity RSO) and the Computer Club, bringing together diverse technical interests focused on practical security application.</p>
                  <h3>What is CTF?</h3>
                 <p>CTF competitions are cybersecurity challenges where participants solve problems to find hidden "flags," simulating real-world security tasks in a controlled, gamified environment.</p>
             </section>
@@ -464,11 +462,11 @@
                 <h3>Core Team Roster</h3>
                  <div class="member-grid">
                     <div class="member-card">
-                        <div class="icon-placeholder">K</div> <span class="handle">Krackentosh</span>
+                        <div class="icon-placeholder">K</div> <span class="handle">krackentosh</span>
                         <span class="role">Captain</span>
                     </div>
                      <div class="member-card">
-                        <div class="icon-placeholder">|\/|</div> <span class="handle">Thrawn</span>
+                        <div class="icon-placeholder">|\/|</div> <span class="handle">thrawn</span>
                         <span class="role">Rev / OSINT</span>
                     </div>
                      <div class="member-card">
@@ -476,20 +474,25 @@
                         <span class="role">Pwn</span>
                     </div>
                      <div class="member-card">
-                        <div class="icon-placeholder">:3</div> <span class="handle">Airbreak</span>
+                        <div class="icon-placeholder">:3</div> <span class="handle">airbreak</span>
                         <span class="role">Forensics</span>
                     </div>
                      <div class="member-card">
-                        <div class="icon-placeholder">φ</div> <span class="handle">Quake</span>
+                        <div class="icon-placeholder">φ</div> <span class="handle">quake</span>
                         <span class="role">Generalist</span>
                     </div>
                         <div class="member-card">
-                        <div class="icon-placeholder">Σ</div> <span class="handle">SnakeSalad</span>
-                        <span class="role">OSINT</span>
+                        <div class="icon-placeholder">Σ</div> <span class="handle">snakeSalad</span>
+                        <span class="role">Web</span>
                     </div>
                         <div class="member-card">
-                        <div class="icon-placeholder">🂿</div> <span class="handle">Clownswag</span>
+                        <div class="icon-placeholder">🂿</div> <span class="handle">clownswag</span>
                         <span class="role">Pwn / Forensics</span>
+                    </div>
+                    </div>
+                        <div class="member-card">
+                        <div class="icon-placeholder">🂿</div> <span class="handle">wolv1ee</span>
+                        <span class="role">OSINT</span>
                     </div>
             </div>
             </section>
@@ -567,8 +570,7 @@
   date      - Display current date/time`;
                     break;
                 case 'whoami':
-                     // Updated whoami response with IP address
-                    output = `User: prospective_recruit@ecx-inc.system
+                    output = `User: site_visitor@ecx-inc.system
 IP Address: ${userIP}
 Status: Analyzing... Potential asset detected.`;
                     break;
