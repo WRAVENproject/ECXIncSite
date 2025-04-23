@@ -315,7 +315,7 @@
             transform: translate(-50%, -50%);
         }
         
-        /* Footer Terminal */
+        /* Terminal */
         .footer-terminal {
             background-color: #111;
             border: 1px solid var(--border-color);
@@ -414,7 +414,7 @@
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#members">Members</a></li>
+                    <li><a href="#members">Hackers</a></li>
                     <li><a href="#competitions">Competitions</a></li>
                     <li><a href="#join">Join</a></li>
                 </ul>
@@ -458,7 +458,7 @@
 
 
             <section id="members" class="grid-item">
-                <h2>Current Operatives</h2>
+                <h2>Current Members</h2>
                 <h3>Core Team Roster</h3>
                  <div class="member-grid">
                     <div class="member-card">
@@ -521,105 +521,117 @@
     <script>
         // Set current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // Footer Terminal Logic
+    
+        // Terminal Logic
         const terminalInput = document.getElementById('terminalInput');
         const terminalOutput = document.getElementById('terminalOutput');
-        let userIP = "unknown"; // Default value until we fetch the real IP
-
-        // Fetch user's IP address when page loads
+        let userIP = "unknown"; // Default until we fetch the real IP
+    
+        // Fetch user's IP and focus input
         window.addEventListener('load', () => {
             fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    userIP = data.ip;
-                })
-                .catch(error => {
-                    console.error("Could not fetch IP:", error);
-                });
-            
-            document.getElementById('terminalInput').focus();
+                .then(res => res.json())
+                .then(data => { userIP = data.ip; })
+                .catch(err => { console.error("Could not fetch IP:", err); });
+            terminalInput.focus();
         });
-
+    
         terminalInput.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
-                const command = terminalInput.value.trim().toLowerCase();
-                // Use HTML entity for > to prevent potential issues
-                const prompt = `<span class="prompt">&gt; ${terminalInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
-                addToOutput(prompt); // Echo command
-
-                if (command) {
-                    processCommand(command);
-                }
-                terminalInput.value = ''; // Clear input
-                event.preventDefault(); // Prevent form submission or newline
+                const raw = terminalInput.value;
+                const command = raw.trim().toLowerCase();
+                const safeRaw = raw.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const prompt = `<span class="prompt">&gt; ${safeRaw}</span>`;
+                addToOutput(prompt);
+                if (command) processCommand(command);
+                terminalInput.value = '';
+                event.preventDefault();
             }
         });
-
+    
         function processCommand(command) {
             let output = '';
-            switch (command) {
-                case 'help':
-                    output = `Available commands:
-  help      - Display this help message
-  whoami    - Display user information
-  ctf-info  - Basic info about CTFs and the team
-  team      - List core team pillars (ECX Inc., WRAVEN, CompClub)
-  clear     - Clear the terminal output
-  date      - Display current date/time`;
-                    break;
-                case 'whoami':
-                    output = `User: site_visitor@ecx-inc.system
-IP Address: ${userIP}
-Status: Analyzing... Potential asset detected.`;
-                    break;
-                case 'ctf-info':
-                     // Updated ctf-info response
-                    output = `Capture The Flag (CTF): Cybersecurity challenges focused on problem-solving across various domains like crypto, pwn, web, rev, forensics.
-ECX Inc.: WMU's premier CTF training ground and competitive team.`;
-                    break;
-                case 'team':
-                    // Updated team response
-                     output = `ECX Inc. is WMU's flagship CTF team, a joint initiative leveraging the strengths of:
-  * WRAVEN (Cybersecurity RSO)
-  * The Computer Club (Broader CS interests)`;
-                     break;
-                case 'clear':
-                    terminalOutput.innerHTML = '';
-                    return; // Don't add empty output
-                case 'date':
-                    // Use the user's current date and time
-                    const currentDate = new Date(); 
-                    output = `Current System Time: ${currentDate.toLocaleString()}`;
-                    break;
-                case 'ls':
-                    output = `/ecx-inc/system`;
-                    break;
-                case 'pwd':
-                    output = `Current Directory: /ecx-inc/system`;
-                    break;
-                case 'cd':
-                    output = `Changing directory... jk`;
-                    break;
-                default:
-                    // Sanitize command output in error message
-                    const sanitizedCommand = command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    output = `<span class="error">command not found: ${sanitizedCommand}</span>`;
+            const base = command.split(' ')[0];
+    
+            if (/^motd\b/.test(command)) {
+                output = `Welcome to ECX Inc.\nPlease don't rm -rf / the server.\nHave a nice hack :)`;
+            } else if (/^sudo\b/.test(command)) {
+                if (/make me a sandwich/.test(command)) {
+                    output = `okay.\n(sandwich.exe has been delivered)`;
+                } else {
+                    output = `Permission denied. You are baby.`;
+                }
+            } else if (/^neofetch\b/.test(command)) {
+                output = `ECX Inc. Virtual Terminal\n--------------------------\nTeam: ECX Inc.\nSystem: WMU CTF Squad\nMood: caffeinated\nIP: ${userIP}\nSkill Issue: 0`;
+            } else if (/^rm\b/.test(command) && /-rf\b/.test(command) && /\//.test(command)) {
+                output = `Nice try.\nBut no.`;
+            } else if (/^hacktheplanet\b/.test(command)) {
+                output = `HACK THE PLANET!!! [acid burn noises]`;
+            } else if (/^fortune\b/.test(command)) {
+                const fortunes = [
+                    "Always sanitize your inputs.",
+                    "Cybersecurity is 90% googling.",
+                    "The flag is not in this terminal.",
+                    "If found, return to 127.0.0.1."
+                ];
+                output = fortunes[Math.floor(Math.random() * fortunes.length)];
+            } else if (/^cat\b/.test(command) && /flag\.txt/.test(command)) {
+                output = `FLAG{you_thought_it_would_be_that_easy}`;
+            } else if (/^echo\b/.test(command) && /\$user/.test(command)) {
+                output = `site_visitor`;
+            } else if (/^emacs\b/.test(command)) {
+                output = `Opening... wait... you meant to use vim, right?`;
+            } else if (/^vim\b/.test(command)) {
+                output = `Launching vim...\nYou are now trapped. Good luck exiting.`;
+            } else if (base === 'help') {
+                output = `Available commands:
+      help      - Display this help message
+      whoami    - Display user information
+      ctf-info  - Basic info about CTFs and the team
+      team      - List core team pillars (ECX Inc., WRAVEN, CompClub)
+      clear     - Clear the terminal output
+      date      - Display current date/time`;
+            } else if (base === 'whoami') {
+                output = `User: site_visitor@ecx-inc.system\nIP Address: ${userIP}\nStatus: Analyzing... Potential asset detected.`;
+            } else if (base === 'ctf-info') {
+                output = `Capture The Flag (CTF): Cybersecurity challenges focused on problem-solving across various domains like crypto, pwn, web, rev, forensics.
+    ECX Inc.: WMU's premier CTF training ground and competitive team.`;
+            } else if (base === 'team') {
+                output = `ECX Inc. is WMU's flagship CTF team, a joint initiative leveraging the strengths of:
+      * WRAVEN (Cybersecurity RSO)
+      * The Computer Club (Broader CS interests)`;
+            } else if (base === 'clear') {
+                terminalOutput.innerHTML = '';
+                return;
+            } else if (base === 'date') {
+                const now = new Date();
+                output = `Current System Time: ${now.toLocaleString()}`;
+            } else if (base === 'ls') {
+                output = `/ecx-inc/system`;
+            } else if (base === 'pwd') {
+                output = `Current Directory: /ecx-inc/system`;
+            } else if (base === 'cd') {
+                output = `Changing directory... jk`;
+            } else {
+                // 1% chance easter egg
+                if (Math.random() < 0.01) {
+                    output = `ALERT: You're being watched by the Rubber Ducky Surveillance Drone.`;
+                } else {
+                    const bad = command.split(' ')[0].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    output = `<span class="error">command not found: ${bad}</span>
+    Did you mean: 'help'? Or perhaps... touch grass?`;
+                }
             }
+    
             addToOutput(output);
         }
-
+    
         function addToOutput(message) {
             const div = document.createElement('div');
-            div.innerHTML = message; // Use innerHTML to render spans correctly
+            div.innerHTML = message;
             terminalOutput.appendChild(div);
-            // Scroll to the bottom
             terminalOutput.scrollTop = terminalOutput.scrollHeight;
         }
-        // Focus on the input field when the page loads
-        window.addEventListener('load', () => {
-            document.getElementById('terminalInput').focus();
-        });
     </script>
 
 </body>
